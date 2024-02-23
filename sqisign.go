@@ -11,7 +11,6 @@ package main
 //#include "sqisign-go.h"
 import "C"
 import (
-	"fmt"
 	"unsafe"
 )
 
@@ -19,22 +18,60 @@ const SecretKeyLen = C.CRYPTO_SECRETKEYBYTES
 const PublicKeyLen = C.CRYPTO_PUBLICKEYBYTES
 const SignatureLen = C.CRYPTO_BYTES
 
-func main() {
+// func main() {
+// 	pub, priv := SQIGenerateKeypair()
+
+// 	fmt.Printf("%x\n\n", pub)
+// 	fmt.Printf("%x\n\n", priv)
+
+// 	sig := SQISign(string(priv), ("njnjn"))
+
+// 	fmt.Printf("%x\n\n", sig)
+// 	fmt.Println(SQIVerify(string(pub), string(sig), ("njnjn")))
+
+// 	fakeSig := sig
+// 	fakeSig[0] = byte(6)
+// 	fmt.Println(SQIVerify(string(pub), string(sig), ("njnjn")))
+// }
+
+func SQIGenerateKeypair() ([]byte, []byte) {
 	pub := C.CBytes(make([]byte, PublicKeyLen))
 	defer C.free(unsafe.Pointer(pub))
 
 	priv := C.CBytes(make([]byte, SecretKeyLen))
 	defer C.free(unsafe.Pointer(priv))
 
-	// pk := C.CString("privateKey")
-	// defer C.free(unsafe.Pointer(pk))
-
-	// sk := C.CString("privateKey")
-	// defer C.free(unsafe.Pointer(sk))
-
 	_ = C.sqisigngo_gen_keypair(pub, priv)
 
-	fmt.Printf("%x\n\n", C.GoBytes(pub, PublicKeyLen))
-	fmt.Printf("%x", C.GoBytes(priv, SecretKeyLen))
-	// println(C.GoInt(res))
+	return C.GoBytes(pub, PublicKeyLen), C.GoBytes(priv, SecretKeyLen)
+}
+
+func SQISign(priv, msg string) []byte {
+	sig := C.CBytes(make([]byte, SignatureLen+len(msg)))
+	defer C.free(unsafe.Pointer(sig))
+
+	privC := C.CString(priv)
+	defer C.free(unsafe.Pointer(privC))
+
+	msgC := C.CString(msg)
+	defer C.free(unsafe.Pointer(msgC))
+
+	if err := C.sqisigngo_sign(sig, msgC, privC); int(err) != 0 {
+		panic("error sqisigngo_sign")
+	}
+
+	return C.GoBytes(sig, C.int(SignatureLen+len(msg)))
+}
+
+func SQIVerify(pub, sig, msg string) bool {
+	pubC := C.CString(pub)
+	defer C.free(unsafe.Pointer(pubC))
+
+	sigC := C.CString(sig)
+	defer C.free(unsafe.Pointer(sigC))
+
+	msgC := C.CString(msg)
+	defer C.free(unsafe.Pointer(msgC))
+
+	return C.sqisigngo_verify(msgC, sigC, pubC) == 0
 }

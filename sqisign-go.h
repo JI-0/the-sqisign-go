@@ -1,5 +1,4 @@
 #include "api.h"
-// #include "sig.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -24,14 +23,22 @@ int sqisigngo_gen_keypair(void *pk, void *sk) {
     return res;
 }
 
-int sqisigngo_sign(unsigned char *sm, unsigned long long *smlen,
-            const unsigned char *m, unsigned long long mlen,
-            const unsigned char *sk) {
-    return crypto_sign(sm, smlen, m, mlen, sk);
+int sqisigngo_sign(void *out, char *m, char *sk) {
+    unsigned long long mlen = strlen(m);
+    unsigned char *sig = (unsigned char *)malloc(CRYPTO_BYTES + mlen);
+    unsigned long long siglen = CRYPTO_BYTES + mlen;
+
+    int res = crypto_sign(sig, &siglen, (const unsigned char *)m, mlen, (const unsigned char *)sk);
+
+    memcpy(out, sig, siglen);
+
+    free(sig);
+
+    return res;
 }
 
-int sqisigngo_verify(unsigned char *m, unsigned long long *mlen,
-                 const unsigned char *sm, unsigned long long smlen,
-                 const unsigned char *pk) {
-    return crypto_sign_open(m, mlen, sm, smlen, pk);
+int sqisigngo_verify(char *m, char *sm, char *pk) {
+    unsigned long long mlen = strlen(m);
+
+    return crypto_sign_open((unsigned char *)m, &mlen, (const unsigned char *)sm, CRYPTO_BYTES + mlen, (const unsigned char *)pk);
 }
