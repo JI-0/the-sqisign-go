@@ -1,6 +1,6 @@
 # SQIsign
 
-This library is a C implementation of SQIsign, short for Short Quaternion and Isogeny Signature (from isogeny graphs of supersingular elliptic curves).
+This is a Go/Golang bindings project of the C implementation of SQIsign library, short for Short Quaternion and Isogeny Signature (from isogeny graphs of supersingular elliptic curves).
 
 ## Requirements
 
@@ -11,6 +11,10 @@ This library is a C implementation of SQIsign, short for Short Quaternion and Is
 - GMP (version 6.1.2 or later)
 
 ## Build
+
+To simplify the build process a bash script was added. Simply run `bash build.sh`.
+
+### Original instructions (only for reference, if changes are needed look at the bash file)
 
 - `mkdir -p build`
 - `cd build`
