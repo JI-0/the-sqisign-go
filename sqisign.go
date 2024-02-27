@@ -1,4 +1,4 @@
-package main
+package sqisign
 
 //#cgo CFLAGS: -I/usr/local/include -I/opt/local/include -I/usr/include -I/opt/homebrew/opt/gmp/include
 //#cgo LDFLAGS: -L/usr/local/lib -L/opt/local/lib -L/usr/lib -Lbuilds/ref -L. -Lbuild/src -lsqisign_lvl1_nistapi
@@ -24,14 +24,14 @@ const SignatureLen = C.CRYPTO_BYTES
 // 	fmt.Printf("%x\n\n", pub)
 // 	fmt.Printf("%x\n\n", priv)
 
-// 	sig := SQISign(string(priv), ("njnjn"))
+// 	sig := SQISign(string(priv), ("test"))
 
 // 	fmt.Printf("%x\n\n", sig)
-// 	fmt.Println(SQIVerify(string(pub), string(sig), ("njnjn")))
+// 	fmt.Println(SQIVerify(string(pub), string(sig), ("test")))
 
-// 	fakeSig := sig
-// 	fakeSig[0] = byte(6)
-// 	fmt.Println(SQIVerify(string(pub), string(sig), ("njnjn")))
+// 	// fakeSig := sig
+// 	// fakeSig[0] = byte(6)
+// 	fmt.Println(SQIVerify(string(pub), string(sig), ("test1")))
 // }
 
 func SQIGenerateKeypair() ([]byte, []byte) {
@@ -60,14 +60,15 @@ func SQISign(priv, msg string) []byte {
 		panic("error sqisigngo_sign")
 	}
 
-	return C.GoBytes(sig, C.int(SignatureLen+len(msg)))
+	return C.GoBytes(sig, C.int(SignatureLen+len(msg)))[:SignatureLen]
 }
 
 func SQIVerify(pub, sig, msg string) bool {
 	pubC := C.CString(pub)
 	defer C.free(unsafe.Pointer(pubC))
 
-	sigC := C.CString(sig)
+	sigB := append([]byte(sig), []byte(msg)...)
+	sigC := C.CString(string(sigB))
 	defer C.free(unsafe.Pointer(sigC))
 
 	msgC := C.CString(msg)
