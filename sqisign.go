@@ -1,4 +1,4 @@
-package main
+package sqisign
 
 //#cgo CFLAGS: -I/usr/local/include -I/opt/local/include -I/usr/include -I/opt/homebrew/opt/gmp/include
 //#cgo LDFLAGS: -L/usr/local/lib -L/opt/local/lib -L/usr/lib -L. -Lbuild/src -lsqisign_lvl1_nistapi
@@ -11,31 +11,28 @@ package main
 //#include "sqisign-go.h"
 import "C"
 import (
-	"fmt"
 	"unsafe"
 )
 
-// -Lbuilds/ref
+const SecretKeyLen = 782
+const PublicKeyLen = 64
+const SignatureLen = 177
 
-const SecretKeyLen = C.CRYPTO_SECRETKEYBYTES
-const PublicKeyLen = C.CRYPTO_PUBLICKEYBYTES
-const SignatureLen = C.CRYPTO_BYTES
+// func main() {
+// 	pub, priv := SQIGenerateKeypair()
 
-func main() {
-	pub, priv := SQIGenerateKeypair()
+// 	fmt.Printf("%x\n\n", pub)
+// 	fmt.Printf("%x\n\n", priv)
 
-	fmt.Printf("%x\n\n", pub)
-	fmt.Printf("%x\n\n", priv)
+// 	sig := SQISign(string(priv), ("test"))
 
-	sig := SQISign(string(priv), ("test"))
+// 	fmt.Printf("%x\n\n", sig)
+// 	fmt.Println(SQIVerify(string(pub), string(sig), ("test")))
 
-	fmt.Printf("%x\n\n", sig)
-	fmt.Println(SQIVerify(string(pub), string(sig), ("test")))
-
-	// fakeSig := sig
-	// fakeSig[0] = byte(6)
-	fmt.Println(SQIVerify(string(pub), string(sig), ("test1")))
-}
+// 	// fakeSig := sig
+// 	// fakeSig[0] = byte(6)
+// 	fmt.Println(SQIVerify(string(pub), string(sig), ("test1")))
+// }
 
 func SQIGenerateKeypair() ([]byte, []byte) {
 	pub := C.CBytes(make([]byte, PublicKeyLen))
