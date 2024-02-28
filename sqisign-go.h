@@ -9,16 +9,7 @@
 #define CRYPTO_BYTES           177
 
 int sqisigngo_gen_keypair(void *pk, void *sk) {
-    unsigned char *pkc  = (unsigned char *)malloc(CRYPTO_PUBLICKEYBYTES);
-    unsigned char *skc  = (unsigned char *)malloc(CRYPTO_SECRETKEYBYTES);
-
-    int res = crypto_sign_keypair(pkc, skc);
-
-    memcpy(pk, pkc, CRYPTO_PUBLICKEYBYTES);
-    memcpy(sk, skc, CRYPTO_SECRETKEYBYTES);
-
-    free(pkc);
-    free(skc);
+    int res = crypto_sign_keypair((unsigned char *)pk, (unsigned char *)sk);
 
     return res;
 }
