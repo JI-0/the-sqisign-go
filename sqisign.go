@@ -1,4 +1,4 @@
-package sqisign
+package rainbow
 
 //#cgo CFLAGS: -I/usr/local/include -I/opt/local/include -I/usr/include -I/opt/homebrew/opt/gmp/include
 //#cgo LDFLAGS: -L/usr/local/lib -L/opt/local/lib -L/usr/lib -L. -Lbuild/src -lsqisign_lvl1_nistapi
@@ -70,7 +70,7 @@ func SQIVerify(pub, sig, msg string) bool {
 	defer C.free(unsafe.Pointer(pubC))
 
 	// sigB := append([]byte(sig), []byte(msg)...)
-	sigC := C.CString(string(sig))
+	sigC := C.CString(sig)
 	defer C.free(unsafe.Pointer(sigC))
 
 	msgC := C.CString(msg)
