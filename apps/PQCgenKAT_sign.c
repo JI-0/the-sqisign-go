@@ -78,7 +78,7 @@ int main(void) {
   for (int i = 0; i < 48; i++)
     entropy_input[i] = i;
 
-  randombytes_init(entropy_input, NULL, 256);
+  sqi_randombytes_init(entropy_input, NULL, 256);
   for (int i = 0; i < 100; i++) {
     fprintf(fp_req, "count = %d\n", i);
     randombytes(seed, 48);
@@ -118,7 +118,7 @@ int main(void) {
     }
     fprintBstr(fp_rsp, "seed = ", seed, 48);
 
-    randombytes_init(seed, NULL, 256);
+    sqi_randombytes_init(seed, NULL, 256);
 
     if (FindMarker(fp_req, "mlen = ")) {
       if (fscanf(fp_req, "%llu", &mlen) != 1)

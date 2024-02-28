@@ -62,7 +62,7 @@ bool curve_is_canonical(ec_curve_t const *E)
 int main(){
     int res = 1;
 
-    randombytes_init((unsigned char *) "some", (unsigned char *) "string", 128);
+    sqi_randombytes_init((unsigned char *) "some", (unsigned char *) "string", 128);
 
     // printf("\nRunning encoding tests\n");
     // res &= test_encode();

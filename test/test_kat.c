@@ -72,7 +72,7 @@ static int test_sig_kat(int cnt) {
             return KAT_DATA_ERROR;
         }
 
-        randombytes_init(seed, NULL, 256);
+        sqi_randombytes_init(seed, NULL, 256);
 
         if ( FindMarker(fp_rsp, "mlen = ") ) {
             ret_val = fscanf(fp_rsp, "%lld", &mlen);

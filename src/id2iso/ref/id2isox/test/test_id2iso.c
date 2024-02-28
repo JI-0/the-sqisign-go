@@ -5,7 +5,7 @@
 int main(){
     int res = 1;
 
-    randombytes_init((unsigned char *) "some", (unsigned char *) "string", 128);
+    sqi_randombytes_init((unsigned char *) "some", (unsigned char *) "string", 128);
 
     printf("Running id2iso module unit tests\n");
 

@@ -43,7 +43,7 @@ static int test_sqisign() {
     unsigned char msg[32] = { 0 };
     unsigned long long msglen = 32;
 
-    randombytes_init(seed, NULL, 256);
+    sqi_randombytes_init(seed, NULL, 256);
 
     printf("Testing Keygen, Sign, Open: %s\n", CRYPTO_ALGNAME);
 

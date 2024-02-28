@@ -48,7 +48,7 @@ AES256_CTR_DRBG_Update(unsigned char *provided_data,
 AES256_CTR_DRBG_struct  DRBG_ctx;
 
 static void
-randombytes_init_nist(unsigned char *entropy_input,
+sqi_randombytes_init_nist(unsigned char *entropy_input,
                       unsigned char *personalization_string,
                       int security_strength) {
     unsigned char   seed_material[48];
@@ -133,8 +133,8 @@ int randombytes(unsigned char *random_array, unsigned long long nbytes) {
 }
 
 void
-randombytes_init(unsigned char *entropy_input,
+sqi_randombytes_init(unsigned char *entropy_input,
                  unsigned char *personalization_string,
                  int security_strength) {
-    return randombytes_init_nist(entropy_input, personalization_string, security_strength);
+    return sqi_randombytes_init_nist(entropy_input, personalization_string, security_strength);
 }

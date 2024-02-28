@@ -3,12 +3,14 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+#include "rng.h"
 
 // #define CRYPTO_SECRETKEYBYTES  782
 // #define CRYPTO_PUBLICKEYBYTES   64
 // #define CRYPTO_BYTES           177
 
-int sqisigngo_gen_keypair(void *pk, void *sk) {
+int sqisigngo_gen_keypair(void *pk, void *sk, char *seed) {
+    sqi_randombytes_init((unsigned char*)seed, NULL, 256);
     int res = sqi_sqi_crypto_sign_keypair((unsigned char *)pk, (unsigned char *)sk);
 
     return res;
