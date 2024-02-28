@@ -55,7 +55,9 @@ func SQIGenerateKeypair() ([]byte, []byte) {
 }
 
 func SQISign(priv, msg string) []byte {
-	sig := C.CBytes(make([]byte, SignatureLen+len([]byte(msg))))
+	mlen := len([]byte(msg))
+
+	sig := C.CBytes(make([]byte, SignatureLen+mlen))
 	defer C.free(unsafe.Pointer(sig))
 
 	privC := C.CString(priv)
@@ -64,11 +66,11 @@ func SQISign(priv, msg string) []byte {
 	msgC := C.CString(msg)
 	defer C.free(unsafe.Pointer(msgC))
 
-	_ = C.sqisigngo_sign(sig, msgC, privC) //; int(err) != 0 {
+	_ = C.sqisigngo_sign(sig, msgC, C.int(mlen), privC) //; int(err) != 0 {
 	// 	panic("error sqisigngo_sign")
 	// }
 
-	return C.GoBytes(sig, C.int(SignatureLen+len([]byte(msg))))[:SignatureLen]
+	return C.GoBytes(sig, C.int(SignatureLen+mlen))[:SignatureLen]
 }
 
 func SQIVerify(pub, sig, msg string) bool {
