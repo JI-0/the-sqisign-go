@@ -28,7 +28,7 @@ int sqisigngo_sign(void *out, char *m, char *sk) {
     unsigned char *sig = (unsigned char *)malloc(CRYPTO_BYTES + mlen);
     unsigned long long siglen = CRYPTO_BYTES + mlen;
 
-    int res = crypto_sign(sig, &siglen, (const unsigned char *)m, mlen, (const unsigned char *)sk);
+    int res = crypto_sign(sig, &siglen, (unsigned char *)m, mlen, (unsigned char *)sk);
 
     memcpy(out, sig, CRYPTO_BYTES);
 
@@ -40,5 +40,5 @@ int sqisigngo_sign(void *out, char *m, char *sk) {
 int sqisigngo_verify(char *m, char *sm, char *pk) {
     unsigned long long mlen = strlen(m);
 
-    return crypto_sign_open((unsigned char *)m, &mlen, (const unsigned char *)sm, CRYPTO_BYTES + mlen, (const unsigned char *)pk);
+    return crypto_sign_open((unsigned char *)m, &mlen, (unsigned char *)sm, CRYPTO_BYTES + mlen, (unsigned char *)pk);
 }
