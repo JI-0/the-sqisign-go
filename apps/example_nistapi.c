@@ -12,9 +12,9 @@
 
 /**
  * Example for SQIsign variant:
- * - crypto_sign_keypair
- * - crypto_sign
- * - crypto_sign_open
+ * - sqi_sqi_crypto_sign_keypair
+ * - sqi_crypto_sign
+ * - sqi_crypto_sign_open
  * 
  * @return int return code
  */
@@ -33,8 +33,8 @@ static int example_sqisign(void) {
 
     printf("Example with %s\n", CRYPTO_ALGNAME);
 
-    printf("crypto_sign_keypair -> ");
-    int res = crypto_sign_keypair(pk, sk);
+    printf("sqi_sqi_crypto_sign_keypair -> ");
+    int res = sqi_sqi_crypto_sign_keypair(pk, sk);
     if (res) {
         printf("FAIL\n");
         res = -1;
@@ -43,8 +43,8 @@ static int example_sqisign(void) {
         printf("OK\n");
     }
 
-    printf("crypto_sign -> ");
-    res = crypto_sign(sig, &smlen, msg, msglen, sk);
+    printf("sqi_crypto_sign -> ");
+    res = sqi_crypto_sign(sig, &smlen, msg, msglen, sk);
     if (res) {
         printf("FAIL\n");
         res = -1;
@@ -53,8 +53,8 @@ static int example_sqisign(void) {
         printf("OK\n");
     }
 
-    printf("crypto_sign_open (with correct signature) -> ");
-    res = crypto_sign_open(msg2, &msglen, sig, smlen, pk);
+    printf("sqi_crypto_sign_open (with correct signature) -> ");
+    res = sqi_crypto_sign_open(msg2, &msglen, sig, smlen, pk);
     if (res || memcmp(msg, msg2, msglen)) {
         printf("FAIL\n");
         res = -1;
@@ -64,10 +64,10 @@ static int example_sqisign(void) {
         printf("OK\n");
     }
 
-    printf("crypto_sign_open (with altered signature) -> ");
+    printf("sqi_crypto_sign_open (with altered signature) -> ");
     sig[0] = ~sig[0];
     memset(msg2, 0, msglen);
-    res = crypto_sign_open(msg2, &msglen, sig, smlen, pk);
+    res = sqi_crypto_sign_open(msg2, &msglen, sig, smlen, pk);
     if (!res || !memcmp(msg, msg2, msglen)) {
         printf("FAIL\n");
         res = -1;

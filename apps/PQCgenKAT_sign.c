@@ -140,35 +140,35 @@ int main(void) {
     fprintBstr(fp_rsp, "msg = ", m, mlen);
 
     // Generate the public/private keypair
-    if ((ret_val = crypto_sign_keypair(pk, sk)) != 0) {
-      printf("crypto_sign_keypair returned <%d>\n", ret_val);
+    if ((ret_val = sqi_sqi_crypto_sign_keypair(pk, sk)) != 0) {
+      printf("sqi_sqi_crypto_sign_keypair returned <%d>\n", ret_val);
       return KAT_CRYPTO_FAILURE;
     }
     fprintBstr(fp_rsp, "pk = ", pk, CRYPTO_PUBLICKEYBYTES);
     fprintBstr(fp_rsp, "sk = ", sk, CRYPTO_SECRETKEYBYTES);
 
-    if ((ret_val = crypto_sign(sm, &smlen, m, mlen, sk)) != 0) {
-      printf("crypto_sign returned <%d>\n", ret_val);
+    if ((ret_val = sqi_crypto_sign(sm, &smlen, m, mlen, sk)) != 0) {
+      printf("sqi_crypto_sign returned <%d>\n", ret_val);
       return KAT_CRYPTO_FAILURE;
     }
     fprintf(fp_rsp, "smlen = %llu\n", smlen);
     fprintBstr(fp_rsp, "sm = ", sm, smlen);
     fprintf(fp_rsp, "\n");
 
-    if ((ret_val = crypto_sign_open(m1, &mlen1, sm, smlen, pk)) != 0) {
-      printf("crypto_sign_open returned <%d>\n", ret_val);
+    if ((ret_val = sqi_crypto_sign_open(m1, &mlen1, sm, smlen, pk)) != 0) {
+      printf("sqi_crypto_sign_open returned <%d>\n", ret_val);
       return KAT_CRYPTO_FAILURE;
     }
 
     if (mlen != mlen1) {
       printf(
-          "crypto_sign_open returned bad 'mlen': Got <%llu>, expected <%llu>\n",
+          "sqi_crypto_sign_open returned bad 'mlen': Got <%llu>, expected <%llu>\n",
           mlen1, mlen);
       return KAT_CRYPTO_FAILURE;
     }
 
     if (memcmp(m, m1, mlen)) {
-      printf("crypto_sign_open returned bad 'm' value\n");
+      printf("sqi_crypto_sign_open returned bad 'm' value\n");
       return KAT_CRYPTO_FAILURE;
     }
 

@@ -9,7 +9,7 @@
 #define CRYPTO_BYTES           177
 
 int sqisigngo_gen_keypair(void *pk, void *sk) {
-    int res = crypto_sign_keypair((unsigned char *)pk, (unsigned char *)sk);
+    int res = sqi_sqi_crypto_sign_keypair((unsigned char *)pk, (unsigned char *)sk);
 
     return res;
 }
@@ -19,7 +19,7 @@ int sqisigngo_sign(void *out, char *m, char *sk) {
     unsigned char *sig = (unsigned char *)malloc(CRYPTO_BYTES + mlen);
     unsigned long long siglen = CRYPTO_BYTES + mlen;
 
-    int res = crypto_sign(sig, &siglen, (unsigned char *)m, mlen, (unsigned char *)sk);
+    int res = sqi_crypto_sign(sig, &siglen, (unsigned char *)m, mlen, (unsigned char *)sk);
 
     memcpy(out, sig, CRYPTO_BYTES);
 
@@ -35,7 +35,7 @@ int sqisigngo_verify(char *m, char *sm, char *pk) {
     memcpy(sig, sm, CRYPTO_BYTES);
     memcpy(sig + CRYPTO_BYTES, m, mlen);
 
-    int r = crypto_sign_open((unsigned char *)m, &mlen, sig, CRYPTO_BYTES + mlen, (unsigned char *)pk);
+    int r = sqi_crypto_sign_open((unsigned char *)m, &mlen, sig, CRYPTO_BYTES + mlen, (unsigned char *)pk);
 
     free(sig);
 
