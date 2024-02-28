@@ -16,8 +16,9 @@ int sqisigngo_gen_keypair(void *pk, void *sk, char *seed) {
     return res;
 }
 
-int sqisigngo_sign(void *out, char *m, int mlen, char *sk) {
-    unsigned long long siglen = 177 + mlen;
+int sqisigngo_sign(void *out, char *m, char *sk) {
+    unsigned long long mlen = strlen(m);
+    unsigned long long siglen = (unsigned long long)177 + mlen;
 
     int res = sqi_crypto_sign((unsigned char *)out, &siglen, (unsigned char *)m, mlen, (unsigned char *)sk);
 
@@ -26,12 +27,14 @@ int sqisigngo_sign(void *out, char *m, int mlen, char *sk) {
 
 int sqisigngo_verify(char *m, char *sm, char *pk) {
     unsigned long long mlen = strlen(m);
-    unsigned char *sig = (unsigned char *)malloc(177 + mlen);
+    unsigned char *sig = (unsigned char *)malloc((unsigned long long)177 + mlen);
 
-    memcpy(sig, sm, 177);
-    memcpy(sig + 177, m, mlen);
+    memcpy(sig, sm, (unsigned long long)177);
+    memcpy(sig + (unsigned long long)177, m, mlen);
 
-    int r = sqi_crypto_sign_open((unsigned char *)m, &mlen, sig, 177 + mlen, (unsigned char *)pk);
+    printf("%d\n", mlen);
+
+    int r = sqi_crypto_sign_open((unsigned char *)m, &mlen, sig, (unsigned long long)177 + mlen, (unsigned char *)pk);
 
     free(sig);
 

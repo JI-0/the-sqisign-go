@@ -66,7 +66,7 @@ func SQISign(priv, msg string) []byte {
 	msgC := C.CString(msg)
 	defer C.free(unsafe.Pointer(msgC))
 
-	_ = C.sqisigngo_sign(sig, msgC, C.int(mlen), privC) //; int(err) != 0 {
+	_ = C.sqisigngo_sign(sig, msgC, privC) //; int(err) != 0 {
 	// 	panic("error sqisigngo_sign")
 	// }
 
@@ -83,6 +83,7 @@ func SQIVerify(pub, sig, msg string) bool {
 
 	msgC := C.CString(msg)
 	defer C.free(unsafe.Pointer(msgC))
+	println(len(msg))
 
 	return C.sqisigngo_verify(msgC, sigC, pubC) == 0
 }
