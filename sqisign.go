@@ -72,8 +72,8 @@ func SQIVerify(pub, sig, msg string) bool {
 	pubC := C.CString(pub)
 	defer C.free(unsafe.Pointer(pubC))
 
-	sigB := append([]byte(sig), []byte(msg)...)
-	sigC := C.CString(string(sigB))
+	// sigB := append([]byte(sig), []byte(msg)...)
+	sigC := C.CString(string(sig))
 	defer C.free(unsafe.Pointer(sigC))
 
 	msgC := C.CString(msg)

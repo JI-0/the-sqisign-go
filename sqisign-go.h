@@ -30,6 +30,14 @@ int sqisigngo_sign(void *out, char *m, char *sk) {
 
 int sqisigngo_verify(char *m, char *sm, char *pk) {
     unsigned long long mlen = strlen(m);
+    unsigned char *sig = (unsigned char *)malloc(CRYPTO_BYTES + mlen);
 
-    return crypto_sign_open((unsigned char *)m, &mlen, (unsigned char *)sm, CRYPTO_BYTES + mlen, (unsigned char *)pk);
+    memcpy(sig, sm, CRYPTO_BYTES);
+    memcpy(sig + CRYPTO_BYTES, m, mlen);
+
+    int r = crypto_sign_open((unsigned char *)m, &mlen, sig, CRYPTO_BYTES + mlen, (unsigned char *)pk);
+
+    free(sig);
+
+    return r;
 }
