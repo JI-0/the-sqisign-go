@@ -30,7 +30,7 @@ int sqisigngo_sign(void *out, char *m, char *sk) {
 
     int res = crypto_sign(sig, &siglen, (const unsigned char *)m, mlen, (const unsigned char *)sk);
 
-    memcpy(out, sig, siglen);
+    memcpy(out, sig, CRYPTO_BYTES);
 
     free(sig);
 

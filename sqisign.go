@@ -26,10 +26,10 @@ const SignatureLen = C.CRYPTO_BYTES
 // 	fmt.Printf("%x\n\n", pub)
 // 	fmt.Printf("%x\n\n", priv)
 
-// 	sig := SQISign(string(priv), ("test"))
+// 	sig := SQISign(string(priv), ("testtesttest"))
 
 // 	fmt.Printf("%x\n\n", sig)
-// 	fmt.Println(SQIVerify(string(pub), string(sig), ("test")))
+// 	fmt.Println(SQIVerify(string(pub), string(sig), ("testtesttest")))
 
 // 	// fakeSig := sig
 // 	// fakeSig[0] = byte(6)
@@ -51,7 +51,7 @@ func SQIGenerateKeypair() ([]byte, []byte) {
 }
 
 func SQISign(priv, msg string) []byte {
-	sig := C.CBytes(make([]byte, SignatureLen+len(msg)))
+	sig := C.CBytes(make([]byte, SignatureLen))
 	defer C.free(unsafe.Pointer(sig))
 
 	privC := C.CString(priv)
@@ -64,7 +64,7 @@ func SQISign(priv, msg string) []byte {
 	// 	panic("error sqisigngo_sign")
 	// }
 
-	return C.GoBytes(sig, C.int(SignatureLen+len(msg)))[:SignatureLen]
+	return C.GoBytes(sig, C.int(SignatureLen))
 }
 
 func SQIVerify(pub, sig, msg string) bool {
