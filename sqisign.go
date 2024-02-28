@@ -1,4 +1,4 @@
-package rainbow
+package sqisign
 
 //#cgo CFLAGS: -I/usr/local/include -I/opt/local/include -I/usr/include -I/opt/homebrew/opt/gmp/include
 //#cgo LDFLAGS: -L/usr/local/lib -L/opt/local/lib -L/usr/lib -L. -Lbuild/src -lsqisign_lvl1_nistapi
