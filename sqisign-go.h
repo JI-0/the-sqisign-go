@@ -32,8 +32,6 @@ int sqisigngo_verify(char *m, char *sm, char *pk) {
     memcpy(sig, sm, (unsigned long long)177);
     memcpy(sig + (unsigned long long)177, m, mlen);
 
-    printf("%d\n", mlen);
-
     int r = sqi_crypto_sign_open((unsigned char *)m, &mlen, sig, (unsigned long long)177 + mlen, (unsigned char *)pk);
 
     free(sig);

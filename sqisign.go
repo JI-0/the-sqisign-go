@@ -83,7 +83,6 @@ func SQIVerify(pub, sig, msg string) bool {
 
 	msgC := C.CString(msg)
 	defer C.free(unsafe.Pointer(msgC))
-	println(len(msg))
 
 	return C.sqisigngo_verify(msgC, sigC, pubC) == 0
 }
