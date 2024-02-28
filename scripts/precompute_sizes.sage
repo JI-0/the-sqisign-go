@@ -65,9 +65,9 @@ api = f'''
 #ifndef api_h
 #define api_h
 
-#define CRYPTO_SECRETKEYBYTES {size_privkey:4}
-#define CRYPTO_PUBLICKEYBYTES {size_pubkey:4}
-#define CRYPTO_BYTES          {size_signature:4}
+#define SQI_CRYPTO_SECRETKEYBYTES {size_privkey:4}
+#define SQI_CRYPTO_PUBLICKEYBYTES {size_pubkey:4}
+#define SQI_CRYPTO_BYTES          {size_signature:4}
 
 #define CRYPTO_ALGNAME "{algname}"
 

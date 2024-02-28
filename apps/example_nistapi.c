@@ -21,10 +21,10 @@
 static int example_sqisign(void) {
 
     unsigned long long msglen = 32;
-    unsigned long long smlen = CRYPTO_BYTES + msglen;
+    unsigned long long smlen = SQI_CRYPTO_BYTES + msglen;
 
-    unsigned char *pk  = calloc(CRYPTO_PUBLICKEYBYTES, 1);
-    unsigned char *sk  = calloc(CRYPTO_SECRETKEYBYTES, 1);
+    unsigned char *pk  = calloc(SQI_CRYPTO_PUBLICKEYBYTES, 1);
+    unsigned char *sk  = calloc(SQI_CRYPTO_SECRETKEYBYTES, 1);
 
     unsigned char *sig = calloc(smlen, 1);
 
@@ -79,7 +79,7 @@ static int example_sqisign(void) {
 
 err:
     free(pk);
-    sqisign_secure_free(sk, CRYPTO_SECRETKEYBYTES);
+    sqisign_secure_free(sk, SQI_CRYPTO_SECRETKEYBYTES);
     free(sig);
     return res;
 }

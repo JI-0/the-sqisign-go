@@ -5,9 +5,9 @@
 #include <string.h>
 #include "rng.h"
 
-// #define CRYPTO_SECRETKEYBYTES  782
-// #define CRYPTO_PUBLICKEYBYTES   64
-// #define CRYPTO_BYTES           177
+// #define SQI_CRYPTO_SECRETKEYBYTES  782
+// #define SQI_CRYPTO_PUBLICKEYBYTES   64
+// #define SQI_CRYPTO_BYTES           177
 
 int sqisigngo_gen_keypair(void *pk, void *sk, char *seed) {
     sqi_randombytes_init((unsigned char*)seed, NULL, 256);

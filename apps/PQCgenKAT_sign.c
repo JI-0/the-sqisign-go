@@ -58,17 +58,17 @@ int main(void) {
   unsigned long long mlen, smlen, mlen1;
   int count;
   int done;
-  unsigned char pk[CRYPTO_PUBLICKEYBYTES], sk[CRYPTO_SECRETKEYBYTES];
+  unsigned char pk[SQI_CRYPTO_PUBLICKEYBYTES], sk[SQI_CRYPTO_SECRETKEYBYTES];
   int ret_val;
 
   // Create the REQUEST file
-  sprintf(fn_req, "PQCsignKAT_%d_%s.req", CRYPTO_SECRETKEYBYTES,
+  sprintf(fn_req, "PQCsignKAT_%d_%s.req", SQI_CRYPTO_SECRETKEYBYTES,
           CRYPTO_ALGNAME);
   if ((fp_req = fopen(fn_req, "w")) == NULL) {
     printf("Couldn't open <%s> for write\n", fn_req);
     return KAT_FILE_OPEN_ERROR;
   }
-  sprintf(fn_rsp, "PQCsignKAT_%d_%s.rsp", CRYPTO_SECRETKEYBYTES,
+  sprintf(fn_rsp, "PQCsignKAT_%d_%s.rsp", SQI_CRYPTO_SECRETKEYBYTES,
           CRYPTO_ALGNAME);
   if ((fp_rsp = fopen(fn_rsp, "w")) == NULL) {
     printf("Couldn't open <%s> for write\n", fn_rsp);
@@ -130,8 +130,8 @@ int main(void) {
     fprintf(fp_rsp, "mlen = %llu\n", mlen);
 
     m = (unsigned char *)calloc(mlen, sizeof(unsigned char));
-    m1 = (unsigned char *)calloc(mlen + CRYPTO_BYTES, sizeof(unsigned char));
-    sm = (unsigned char *)calloc(mlen + CRYPTO_BYTES, sizeof(unsigned char));
+    m1 = (unsigned char *)calloc(mlen + SQI_CRYPTO_BYTES, sizeof(unsigned char));
+    sm = (unsigned char *)calloc(mlen + SQI_CRYPTO_BYTES, sizeof(unsigned char));
 
     if (!ReadHex(fp_req, m, (int)mlen, "msg = ")) {
       printf("ERROR: unable to read 'msg' from <%s>\n", fn_req);
@@ -144,8 +144,8 @@ int main(void) {
       printf("sqi_sqi_crypto_sign_keypair returned <%d>\n", ret_val);
       return KAT_CRYPTO_FAILURE;
     }
-    fprintBstr(fp_rsp, "pk = ", pk, CRYPTO_PUBLICKEYBYTES);
-    fprintBstr(fp_rsp, "sk = ", sk, CRYPTO_SECRETKEYBYTES);
+    fprintBstr(fp_rsp, "pk = ", pk, SQI_CRYPTO_PUBLICKEYBYTES);
+    fprintBstr(fp_rsp, "sk = ", sk, SQI_CRYPTO_SECRETKEYBYTES);
 
     if ((ret_val = sqi_crypto_sign(sm, &smlen, m, mlen, sk)) != 0) {
       printf("sqi_crypto_sign returned <%d>\n", ret_val);

@@ -81,11 +81,11 @@ static int bench_sig(int runs, int csv) {
 
     const int m_len = 32;
 
-    unsigned char *pk  = calloc(CRYPTO_PUBLICKEYBYTES, 1);
-    unsigned char *sk  = calloc(CRYPTO_SECRETKEYBYTES, 1);
-    unsigned char *sig = calloc(CRYPTO_BYTES + m_len, 1);
+    unsigned char *pk  = calloc(SQI_CRYPTO_PUBLICKEYBYTES, 1);
+    unsigned char *sk  = calloc(SQI_CRYPTO_SECRETKEYBYTES, 1);
+    unsigned char *sig = calloc(SQI_CRYPTO_BYTES + m_len, 1);
     unsigned char *m   = calloc(m_len, 1);
-    unsigned long long len = CRYPTO_BYTES;
+    unsigned long long len = SQI_CRYPTO_BYTES;
 
     if (csv) {
         printf("%s,", CRYPTO_ALGNAME);
@@ -103,7 +103,7 @@ static int bench_sig(int runs, int csv) {
 
     len = 32;
     BENCH_CODE_1(runs);
-    sqisign_open(m, &len, sig, CRYPTO_BYTES, pk);
+    sqisign_open(m, &len, sig, SQI_CRYPTO_BYTES, pk);
     BENCH_CODE_2("sqisign_verify", csv);
 
     if (csv) {

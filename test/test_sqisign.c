@@ -35,9 +35,9 @@ static void print_hex(const unsigned char *hex, int len) {
 
 
 static int test_sqisign() {
-    unsigned char *pk  = calloc(CRYPTO_PUBLICKEYBYTES, 1);
-    unsigned char *sk  = calloc(CRYPTO_SECRETKEYBYTES, 1);
-    unsigned char *sig = calloc(CRYPTO_BYTES + 32, 1);
+    unsigned char *pk  = calloc(SQI_CRYPTO_PUBLICKEYBYTES, 1);
+    unsigned char *sk  = calloc(SQI_CRYPTO_SECRETKEYBYTES, 1);
+    unsigned char *sig = calloc(SQI_CRYPTO_BYTES + 32, 1);
 
     unsigned char seed[48] = { 0 };
     unsigned char msg[32] = { 0 };
@@ -54,10 +54,10 @@ static int test_sqisign() {
     }
 
 #ifdef ENABLE_CT_TESTING
-    VALGRIND_MAKE_MEM_DEFINED(pk, CRYPTO_PUBLICKEYBYTES);
+    VALGRIND_MAKE_MEM_DEFINED(pk, SQI_CRYPTO_PUBLICKEYBYTES);
 #endif
 
-    unsigned long long smlen = CRYPTO_BYTES + 32;
+    unsigned long long smlen = SQI_CRYPTO_BYTES + 32;
 
     res = sqisign_sign(sig, &smlen, msg, 32, sk);
     if (res != 0) {
@@ -66,9 +66,9 @@ static int test_sqisign() {
     }
 
     printf("pk: ");
-    print_hex(pk, CRYPTO_PUBLICKEYBYTES);
+    print_hex(pk, SQI_CRYPTO_PUBLICKEYBYTES);
     printf("sk: ");
-    print_hex(sk, CRYPTO_SECRETKEYBYTES);
+    print_hex(sk, SQI_CRYPTO_SECRETKEYBYTES);
     printf("sm: ");
     print_hex(sig, smlen);
 

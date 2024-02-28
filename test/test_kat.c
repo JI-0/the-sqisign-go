@@ -42,14 +42,14 @@ static int test_sig_kat(int cnt) {
     unsigned long long  mlen, smlen, mlen1;
     int                 count;
     int                 done;
-    unsigned char       pk[CRYPTO_PUBLICKEYBYTES], sk[CRYPTO_SECRETKEYBYTES];
+    unsigned char       pk[SQI_CRYPTO_PUBLICKEYBYTES], sk[SQI_CRYPTO_SECRETKEYBYTES];
     int                 ret_val;
 
     char                fn_rsp[64];
     FILE                *fp_rsp;
-    unsigned char       pk_rsp[CRYPTO_PUBLICKEYBYTES], sk_rsp[CRYPTO_SECRETKEYBYTES];
+    unsigned char       pk_rsp[SQI_CRYPTO_PUBLICKEYBYTES], sk_rsp[SQI_CRYPTO_SECRETKEYBYTES];
 
-    sprintf(fn_rsp, "../../KAT/PQCsignKAT_%d_%s.rsp", CRYPTO_SECRETKEYBYTES, CRYPTO_ALGNAME);
+    sprintf(fn_rsp, "../../KAT/PQCsignKAT_%d_%s.rsp", SQI_CRYPTO_SECRETKEYBYTES, CRYPTO_ALGNAME);
     if ( (fp_rsp = fopen(fn_rsp, "r")) == NULL ) {
         printf("Couldn't open <%s> for read\n", fn_rsp);
         return KAT_FILE_OPEN_ERROR;
@@ -83,8 +83,8 @@ static int test_sig_kat(int cnt) {
 
         m = (unsigned char *)calloc(mlen, sizeof(unsigned char));
         m1 = (unsigned char *)calloc(mlen, sizeof(unsigned char));
-        sm = (unsigned char *)calloc(mlen + CRYPTO_BYTES, sizeof(unsigned char));
-        sm_rsp = (unsigned char *)calloc(mlen + CRYPTO_BYTES, sizeof(unsigned char));
+        sm = (unsigned char *)calloc(mlen + SQI_CRYPTO_BYTES, sizeof(unsigned char));
+        sm_rsp = (unsigned char *)calloc(mlen + SQI_CRYPTO_BYTES, sizeof(unsigned char));
 
         if ( !ReadHex(fp_rsp, m, (int)mlen, "msg = ") ) {
             printf("ERROR: unable to read 'msg' from <%s>\n", fn_rsp);
@@ -96,20 +96,20 @@ static int test_sig_kat(int cnt) {
             printf("sqi_sqi_crypto_sign_keypair returned <%d>\n", ret_val);
             return KAT_CRYPTO_FAILURE;
         }
-        if ( !ReadHex(fp_rsp, pk_rsp, CRYPTO_PUBLICKEYBYTES, "pk = ") ) {
+        if ( !ReadHex(fp_rsp, pk_rsp, SQI_CRYPTO_PUBLICKEYBYTES, "pk = ") ) {
             printf("ERROR: unable to read 'pk' from <%s>\n", fn_rsp);
             return KAT_DATA_ERROR;
         }
-        if ( !ReadHex(fp_rsp, sk_rsp, CRYPTO_SECRETKEYBYTES, "sk = ") ) {
+        if ( !ReadHex(fp_rsp, sk_rsp, SQI_CRYPTO_SECRETKEYBYTES, "sk = ") ) {
             printf("ERROR: unable to read 'sk' from <%s>\n", fn_rsp);
             return KAT_DATA_ERROR;
         }
 
-        if (memcmp(pk, pk_rsp, CRYPTO_PUBLICKEYBYTES) != 0) {
+        if (memcmp(pk, pk_rsp, SQI_CRYPTO_PUBLICKEYBYTES) != 0) {
             printf("ERROR: pk is different from <%s>\n", fn_rsp);
             return KAT_VERIFICATION_ERROR;
         }
-        if (memcmp(sk, sk_rsp, CRYPTO_SECRETKEYBYTES) != 0) {
+        if (memcmp(sk, sk_rsp, SQI_CRYPTO_SECRETKEYBYTES) != 0) {
             printf("ERROR: sk is different from <%s>\n", fn_rsp);
             return KAT_VERIFICATION_ERROR;
         }
